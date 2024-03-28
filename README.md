@@ -46,7 +46,9 @@ spring.redis.port=6379
 ```
 
 #### Livekit服务器地址
-多人会议(SFU)使用了开源的livekit(https://docs.livekit.io/realtime/self-hosting/local/)框架，请自己安装搭建，
+
+安装文档 https://www.yuque.com/yuanfangxiyang/hzema9/mpr8zlo99idggx28
+多人会议(SFU)使用了livekit开源的框架，请自己安装搭建
 完成后配置livekit服务地址和appid、secret
 
 修改 ./config/application.properties
