@@ -33,11 +33,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
-    implementation libs.constraintlayout
-    implementation libs.navigation.fragment
-    implementation libs.navigation.ui
-
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.9.10"))
 
     implementation "com.farsunset:cim-android-sdk:4.2.13"
 
@@ -61,5 +56,4 @@ dependencies {
     implementation 'io.livekit:livekit-android:2.1.1'
     implementation 'com.google.protobuf:protobuf-javalite:3.23.0'
 
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:1.6.4'
 }

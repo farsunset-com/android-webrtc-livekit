@@ -1,6 +1,8 @@
 ### 项目介绍
 该项目为原生Android提供开箱即用的单人、多人音视频通话和共享桌面插件。
-目前仅仅提供了安装包，需要源码请访问 https://farsunset.com/about
+目前仅仅提供了安装包。
+
+需要源码请访问 https://farsunset.com/about
 
 
 | 目录                 | 说明                      |
@@ -10,8 +12,8 @@
 | webrtc-boot-server-1.0.0.jar | 提供信令和通话指令推送服务安装包        |
 
 <div align="center">
-   <img src="http://staticres.oss-cn-hangzhou.aliyuncs.com/hoxin/group_video_calling.jpg" width="45%"  />
-   <img src="http://staticres.oss-cn-hangzhou.aliyuncs.com/hoxin/call_video_incoming.jpg" width="45%"  />
+   <img src="http://staticres.oss-cn-hangzhou.aliyuncs.com/hoxin/group_video_calling.jpg" width="48%"  />
+   <img src="http://staticres.oss-cn-hangzhou.aliyuncs.com/hoxin/call_video_incoming.jpg" width="48%"  />
 </div>
 
 ### 服务端安装
@@ -118,10 +120,36 @@ java -Dcom.sun.akuma.Daemon=daemonized -Dspring.profiles.active=pro -jar ./webrt
 
 
 #### 1.初始化
+
+依赖的组件
+```
+    implementation 'org.webrtc:google-webrtc:1.0.32006'
+    implementation 'androidx.palette:palette:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
+    implementation 'com.google.android.material:material:1.11.0'
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+    implementation "com.github.bumptech.glide:okhttp3-integration:4.16.0"
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
+    implementation 'jp.wasabeef:glide-transformations:4.3.0'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.belerweb:pinyin4j:2.5.1'
+    implementation 'io.livekit:livekit-android:2.1.1'
+    implementation 'com.google.protobuf:protobuf-javalite:3.23.0'
+    
+    //可选
+    implementation "com.farsunset:cim-android-sdk:4.2.13"
+```
+
+
 在应用的Application.create()里调用
 ```
 WebrtcMeetingSdk.install(this);        
 ```
+
+
+
 
 
 #### 2.设置配置信息
