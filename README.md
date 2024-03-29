@@ -2,11 +2,13 @@
 该项目为原生Android提供开箱即用的单人、多人音视频通话和共享桌面插件。
 目前仅仅提供了安装包，需要源码请访问 https://farsunset.com/about
 
+Uniapp版本插件请访问
+https://ext.dcloud.net.cn/plugin?id=15159
 
 | 目录                            | 说明                      |
 |-------------------------------|-------------------------|
 | meeting-plugin-2024.03.29.aar | 为原生Android应用提供的可开箱使用插件包 |
-| webrtc-boot-server-1.0.0.jar  | 提供信令和通话指令推送服务端安装包       |
+| webrtc-boot-server-1.0.0.jar  | 服务端安装包，文件较大请联系获取        |
 | meeting-plugin-demo           | 插件使用demo                |
 
 <div align="center">
@@ -15,6 +17,8 @@
 </div>
 
 ### 服务端安装
+
+可以先使用体验环境  http://39.99.150.41:8080
 
 webrtc-boot-server依赖组件
 
