@@ -1,15 +1,13 @@
 ### 项目介绍
 该项目为原生Android提供开箱即用的单人、多人音视频通话和共享桌面插件。
-目前仅仅提供了安装包。
-
-需要源码请访问 https://farsunset.com/about
+目前仅仅提供了安装包，需要源码请访问 https://farsunset.com/about
 
 
-| 目录                 | 说明                      |
-|--------------------|-------------------------|
-| livekit-meeting-android-2024.03.28.aar            | 为原生Android应用提供的可开箱使用插件包 |
-| meeting-plugin-demo                | 插件使用demo                |
-| webrtc-boot-server-1.0.0.jar | 提供信令和通话指令推送服务安装包        |
+| 目录                            | 说明                      |
+|-------------------------------|-------------------------|
+| meeting-plugin-2024.03.29.aar | 为原生Android应用提供的可开箱使用插件包 |
+| webrtc-boot-server-1.0.0.jar  | 提供信令和通话指令推送服务端安装包       |
+| meeting-plugin-demo           | 插件使用demo                |
 
 <div align="center">
    <img src="http://staticres.oss-cn-hangzhou.aliyuncs.com/hoxin/group_video_calling.jpg" width="48%"  />
@@ -46,7 +44,8 @@ spring.redis.port=6379
 ```
 
 #### Livekit服务器地址
-多人会议(SFU)使用了开源的livekit(https://docs.livekit.io/realtime/self-hosting/local/)框架，请自己安装搭建，
+安装文档 https://www.yuque.com/yuanfangxiyang/hzema9/mpr8zlo99idggx28
+多人会议(SFU)使用了livekit开源的框架，请自己安装搭建
 完成后配置livekit服务地址和appid、secret
 
 修改 ./config/application.properties
@@ -120,36 +119,34 @@ java -Dcom.sun.akuma.Daemon=daemonized -Dspring.profiles.active=pro -jar ./webrt
 
 
 #### 1.初始化
-
-依赖的组件
-```
-    implementation 'org.webrtc:google-webrtc:1.0.32006'
-    implementation 'androidx.palette:palette:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.recyclerview:recyclerview:1.3.2'
-    implementation 'com.google.android.material:material:1.11.0'
-    implementation 'com.github.bumptech.glide:glide:4.16.0'
-    implementation "com.github.bumptech.glide:okhttp3-integration:4.16.0"
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
-    implementation 'jp.wasabeef:glide-transformations:4.3.0'
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.belerweb:pinyin4j:2.5.1'
-    implementation 'io.livekit:livekit-android:2.1.1'
-    implementation 'com.google.protobuf:protobuf-javalite:3.23.0'
-    
-    //可选
-    implementation "com.farsunset:cim-android-sdk:4.2.13"
-```
-
-
 在应用的Application.create()里调用
 ```
 WebrtcMeetingSdk.install(this);        
 ```
+添加依赖组件
+```
+    //可选
+    implementation "com.farsunset:cim-android-sdk:4.2.13"
 
+    implementation 'androidx.palette:palette:1.0.0'
 
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.recyclerview:recyclerview:1.3.2'
 
+    implementation 'com.google.android.material:material:1.11.0'
+
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
+    implementation "com.github.bumptech.glide:okhttp3-integration:4.16.0"
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.16.0'
+    implementation 'jp.wasabeef:glide-transformations:4.3.0'
+
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    implementation 'com.belerweb:pinyin4j:2.5.1'
+    implementation 'io.livekit:livekit-android:2.2.0'
+    implementation 'com.google.protobuf:protobuf-javalite:3.23.0'       
+```
 
 
 #### 2.设置配置信息
@@ -218,7 +215,28 @@ false:从好友列表选择
 WebrtcMeetingSdk.onCreateMeeting(false);
 ```
 
-#### 7.收到推送信令消息
+#### 7.加入会议
+根据房间号码通过接口获取到房间信息，然后进入会议
+request信息从接口中获取，假如你的服务器是39.99.150.41
+http://39.99.150.41:8080/swagger-ui/index.html#/Livekit%E4%BC%9A%E8%AE%AE%E6%8E%A5%E5%8F%A3/getRoomUsingGET
+```
+JoinMeetingRequest request = new JoinMeetingRequest();
+request.setName("张三");
+request.setUid(10003);
+request.setTitle("会议主题");
+request.setDescription("会议描述");
+request.setTag("房间号码");
+/* 是否开启本地摄像头 */
+request.setLocalCameraOn(false);
+/* 是否开启本地麦克风 */
+request.setLocalMicrophoneOn(false);
+/* 房间否被全员禁言 */
+request.setMuted(false);
+WebrtcMeetingSdk.onJoinMeeting(request);
+```
+
+
+#### 8.收到推送信令消息
 收到服务端推送的通话相关消息，如收到单人来电、会议邀请、ice同步等，都传递给插件去执行即可。
 消息来源参照服务端，使用CIM为消息推送通道或者使用自有的消息推送通道
 ```
@@ -226,7 +244,7 @@ WebrtcMeetingSdk.onMessageReceived(message);
 ```
 
 
-#### 8.  新增联系人
+#### 9.  新增联系人
 通讯录增增联系人
 ```
 Friend friend = new Friend();
@@ -236,7 +254,7 @@ friend.name = "王五";
 WebrtcMeetingSdk.addContact(friend);
 ```
 
-#### 9.  删除联系人
+#### 10.  删除联系人
 通讯录删除联系人
 id:用户UID
 ```
@@ -295,15 +313,17 @@ public class WebrtcCallEventReceiver extends BroadcastReceiver {
 
 发起单人通话时立即通知
 
-| 字段名            | 含义                      |
-|----------------|-------------------------|
-| key            | ACTION_START_CALLING |
+| 字段名  | 含义                   |
+|------|----------------------|
+| key  | ACTION_START_CALLING |
+| data | 对方UID                |
 ```
 public class WebrtcCallEventReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
              String key = intent.getStringExtra("type");
+             String uid = intent.getStringExtra("data");
         }
        
 }
@@ -311,18 +331,18 @@ public class WebrtcCallEventReceiver extends BroadcastReceiver {
 
 ##### 3.收到会议邀请
 
-收到会议邀请
+收到立即入会邀请，显示提示接听页面时 会发起改广播
 
-| 字段名            | 含义                      |
-|----------------|-------------------------|
-| key            | ACTION_MEETING_RING |
-| data.tag       | 房间号                     |
-| data.title  | 会议主题                    |
-| data.description | 会议描述                    |
-| data.createAt  | 会议创建时间戳(13位)            |
-| data.uid       | 通话发起人UID                |
-| data.name      | 发起人名称                   |
-| data.dueTime   | 会议预约时间                  |
+| 字段名              | 含义                   |
+|------------------|----------------------|
+| key              | ACTION_MEETING_RING  |
+| data.tag         | 房间号                  |
+| data.title       | 会议主题                 |
+| data.description | 会议描述                 |
+| data.createAt    | 会议创建时间戳(13位)         |
+| data.uid         | 通话发起人UID             |
+| data.name        | 发起人名称                |
+| data.dueTime     | 会议预约时间               |
 ```
 public class WebrtcCallEventReceiver extends BroadcastReceiver {
 
@@ -338,7 +358,7 @@ public class WebrtcCallEventReceiver extends BroadcastReceiver {
 
 ##### 4.会议结束结通知
 
- 所有多人通话事件均放在这个事件当中，根据状态来进行消息记录显示处理
+多人会议完成时，包含解散，退出，发出会议详情信息，用于上层记录通话历史
 
 | 字段名            | 含义                      |
 |----------------|-------------------------|
